@@ -1,0 +1,2 @@
+mod 'saz-sudo', '7.0.2'
+mod 'puppetlabs-apt', '8.0.0'
