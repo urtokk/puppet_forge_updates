@@ -6,6 +6,7 @@ Its output is a list of modules that have updates available, and the new version
 The versions are colored according to the severity of the update.
 
 Example:
+
 ![example-output](docs/images/example-output.png)
 
 ## Installation
