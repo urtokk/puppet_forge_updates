@@ -77,11 +77,11 @@ pub(crate) fn read_puppetfile(path: &str) -> Vec<PuppetModule> {
             let mut line = line.split_whitespace();
             line.next();
             // the name needs to be normilized, removing the quotes and the comma from the whole string
-            let name = line.next().unwrap().replace("'", "").replace(",", "");
+            let name = line.next().unwrap().replace("'", "").replace(",", "").replace("\"","");
             // the version needs to be normilized, removing the quotes and the comma from the whole string
             // if the version is not specified, skip the module, could be a git repo
             let version = match line.next() {
-                Some(version) => version.replace("'", "").replace(",", ""),
+                Some(version) => version.replace("'", "").replace(",", "").replace("\"", ""),
                 None => continue,
             };
             modules.push(PuppetModule::new(name.as_str(), version.as_str()));
