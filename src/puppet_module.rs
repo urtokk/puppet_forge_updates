@@ -120,7 +120,7 @@ impl std::fmt::Display for PuppetModule {
                 self.current_version,
                 self.latest_version.to_string().blue()
             ),
-            None => write!(f, "{} {}", self.name, self.current_version),
+            None => write!(f, ""),
         }
     }
 }
