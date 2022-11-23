@@ -12,7 +12,7 @@ struct Version {
 }
 
 #[derive(Debug, Eq, PartialEq)]
-enum VersionUpdate {
+pub(crate) enum VersionUpdate {
     Major,
     Minor,
     Patch,
@@ -51,7 +51,7 @@ impl PuppetModule {
         Version::from(module["current_release"]["version"].as_str().unwrap())
     }
 
-    fn determine_update(&self) -> Option<VersionUpdate> {
+    pub(crate) fn determine_update(&self) -> Option<VersionUpdate> {
         if self.current_version.major < self.latest_version.major {
             Some(VersionUpdate::Major)
         } else if self.current_version.minor < self.latest_version.minor {
@@ -120,7 +120,8 @@ impl std::fmt::Display for PuppetModule {
                 self.current_version,
                 self.latest_version.to_string().blue()
             ),
-            None => Ok(()),
+            // if there is no update, do not print anything, also no empty lines
+            None => write!(f, ""),
         }
     }
 }
