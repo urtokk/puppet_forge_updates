@@ -11,6 +11,8 @@ fn main() {
     let modules = puppet_module::read_puppetfile(path);
 
     for module in modules.iter() {
-        println!("{}", module);
+        if module.determine_update().is_some() {
+            println!("{}", module);
+        }
     }
 }

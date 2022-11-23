@@ -1,5 +1,5 @@
 mod 'puppetlabs-java', '8.0.0'
-mod 'puppetlabs-apt', '8.0.0'
-mod 'saz-sudo', '7.0.1'
+mod 'saz-sudo', '7.0.2'
 mod 'apache',
   :git => 'https://github.com/puppetlabs/puppetlabs-apache'
+mod 'puppetlabs-apt', '8.0.0'
