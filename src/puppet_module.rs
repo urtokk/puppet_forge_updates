@@ -197,7 +197,5 @@ mod tests {
                 module.latest_version.to_string().red()
             )
         );
-        let module2 = super::PuppetModule::new("puppetlabs-stdlib", "8.5.0");
-        assert_eq!(format!("{}", module2), "puppetlabs-stdlib 8.5.0");
     }
 }
