@@ -327,4 +327,24 @@ mod tests {
         let module = PuppetModule::new_mock("puppetlabs-stdlib", "5.2.0", latest);
         assert_eq!(format!("{}", module), "");
     }
+
+    #[test]
+    fn test_forge_live_response_to_version_struct() {
+        // Holt eine echte Antwort von der Forge-API für ein bekanntes Modul
+        let url = "https://forgeapi.puppetlabs.com/v3/modules/puppetlabs-stdlib";
+        let response = reqwest::blocking::get(url).expect("Forge API nicht erreichbar");
+        assert!(
+            response.status().is_success(),
+            "Forge API liefert Fehlerstatus"
+        );
+        let module: serde_json::Value = response.json().expect("Antwort ist kein JSON");
+        let version_str = module["current_release"]["version"]
+            .as_str()
+            .expect("Version nicht gefunden");
+        let version = Version::from(version_str);
+        // Die genaue Version kann sich ändern, daher prüfen wir nur auf sinnvolle Werte
+        assert!(version.major > 0, "Major-Version sollte > 0 sein");
+        assert!(version.minor >= 0, "Minor-Version sollte >= 0 sein");
+        assert!(version.patch >= 0, "Patch-Version sollte >= 0 sein");
+    }
 }
