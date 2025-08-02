@@ -1,5 +1,6 @@
-use serde::Deserialize;
 use colored::*;
+use reqwest;
+use serde::Deserialize;
 
 static FORGE_URL: &'static str = "https://forgeapi.puppetlabs.com";
 
@@ -77,7 +78,12 @@ pub(crate) fn read_puppetfile(path: &str) -> Vec<PuppetModule> {
             let mut line = line.split_whitespace();
             line.next();
             // the name needs to be normilized, removing the quotes and the comma from the whole string
-            let name = line.next().unwrap().replace("'", "").replace(",", "").replace("\"","");
+            let name = line
+                .next()
+                .unwrap()
+                .replace("'", "")
+                .replace(",", "")
+                .replace("\"", "");
             // the version needs to be normilized, removing the quotes and the comma from the whole string
             // if the version is not specified, skip the module, could be a git repo
             let version = match line.next() {
@@ -150,22 +156,57 @@ impl std::fmt::Display for Version {
     }
 }
 
+#[cfg(test)]
 mod tests {
-    use colored::*;
+    use super::*;
 
-    // test for Version struct
+    // Hilfsfunktion für Mock-Module ohne Forge-API
+    impl PuppetModule {
+        fn new_mock(name: &str, current_version: &str, latest_version: Version) -> PuppetModule {
+            PuppetModule {
+                name: name.to_string(),
+                current_version: Version::from(current_version),
+                latest_version,
+            }
+        }
+    }
+
     #[test]
     fn test_version_from() {
-        let version = super::Version::from("1.2.3");
+        let version = Version::from("1.2.3");
         assert_eq!(version.major, 1);
         assert_eq!(version.minor, 2);
         assert_eq!(version.patch, 3);
     }
 
-    // test for PuppetModule struct
     #[test]
-    fn test_puppet_module_new() {
-        let module = super::PuppetModule::new("puppetlabs-stdlib", "5.2.0");
+    fn test_version_to_string() {
+        let version = Version {
+            major: 1,
+            minor: 2,
+            patch: 3,
+        };
+        assert_eq!(version.to_string(), "1.2.3");
+    }
+
+    #[test]
+    fn test_version_display() {
+        let version = Version {
+            major: 4,
+            minor: 5,
+            patch: 6,
+        };
+        assert_eq!(format!("{}", version), "4.5.6");
+    }
+
+    #[test]
+    fn test_puppet_module_new_mock() {
+        let latest = Version {
+            major: 8,
+            minor: 5,
+            patch: 0,
+        };
+        let module = PuppetModule::new_mock("puppetlabs-stdlib", "5.2.0", latest);
         assert_eq!(module.name, "puppetlabs-stdlib");
         assert_eq!(module.current_version.major, 5);
         assert_eq!(module.current_version.minor, 2);
@@ -175,19 +216,58 @@ mod tests {
         assert_eq!(module.latest_version.patch, 0);
     }
 
-    // test for PuppetModule::determine_update
     #[test]
-    fn test_puppet_module_determine_update() {
-        let module = super::PuppetModule::new("puppetlabs-stdlib", "5.2.0");
-        assert_eq!(module.determine_update(), Some(super::VersionUpdate::Major));
-        let module2 = super::PuppetModule::new("puppetlabs-stdlib", "8.5.0");
-        assert_eq!(module2.determine_update(), None);
+    fn test_puppet_module_determine_update_major() {
+        let latest = Version {
+            major: 8,
+            minor: 5,
+            patch: 0,
+        };
+        let module = PuppetModule::new_mock("puppetlabs-stdlib", "5.2.0", latest);
+        assert_eq!(module.determine_update(), Some(VersionUpdate::Major));
     }
 
-    // test if the version is displayed correctly and colored
     #[test]
-    fn test_puppet_module_display() {
-        let module = super::PuppetModule::new("puppetlabs-stdlib", "5.2.0");
+    fn test_puppet_module_determine_update_minor() {
+        let latest = Version {
+            major: 5,
+            minor: 3,
+            patch: 0,
+        };
+        let module = PuppetModule::new_mock("puppetlabs-stdlib", "5.2.0", latest);
+        assert_eq!(module.determine_update(), Some(VersionUpdate::Minor));
+    }
+
+    #[test]
+    fn test_puppet_module_determine_update_patch() {
+        let latest = Version {
+            major: 5,
+            minor: 2,
+            patch: 1,
+        };
+        let module = PuppetModule::new_mock("puppetlabs-stdlib", "5.2.0", latest);
+        assert_eq!(module.determine_update(), Some(VersionUpdate::Patch));
+    }
+
+    #[test]
+    fn test_puppet_module_determine_update_none() {
+        let latest = Version {
+            major: 5,
+            minor: 2,
+            patch: 0,
+        };
+        let module = PuppetModule::new_mock("puppetlabs-stdlib", "5.2.0", latest);
+        assert_eq!(module.determine_update(), None);
+    }
+
+    #[test]
+    fn test_puppet_module_display_major() {
+        let latest = Version {
+            major: 8,
+            minor: 5,
+            patch: 0,
+        };
+        let module = PuppetModule::new_mock("puppetlabs-stdlib", "5.2.0", latest);
         assert_eq!(
             format!("{}", module),
             format!(
@@ -197,5 +277,54 @@ mod tests {
                 module.latest_version.to_string().red()
             )
         );
+    }
+
+    #[test]
+    fn test_puppet_module_display_minor() {
+        let latest = Version {
+            major: 5,
+            minor: 3,
+            patch: 0,
+        };
+        let module = PuppetModule::new_mock("puppetlabs-stdlib", "5.2.0", latest);
+        assert_eq!(
+            format!("{}", module),
+            format!(
+                "{} {} -> {}",
+                module.name,
+                module.current_version,
+                module.latest_version.to_string().yellow()
+            )
+        );
+    }
+
+    #[test]
+    fn test_puppet_module_display_patch() {
+        let latest = Version {
+            major: 5,
+            minor: 2,
+            patch: 1,
+        };
+        let module = PuppetModule::new_mock("puppetlabs-stdlib", "5.2.0", latest);
+        assert_eq!(
+            format!("{}", module),
+            format!(
+                "{} {} -> {}",
+                module.name,
+                module.current_version,
+                module.latest_version.to_string().blue()
+            )
+        );
+    }
+
+    #[test]
+    fn test_puppet_module_display_none() {
+        let latest = Version {
+            major: 5,
+            minor: 2,
+            patch: 0,
+        };
+        let module = PuppetModule::new_mock("puppetlabs-stdlib", "5.2.0", latest);
+        assert_eq!(format!("{}", module), "");
     }
 }
