@@ -1,27 +1,35 @@
 puppet_module:
-  - "src/puppet_module.rs"
+  paths:
+    - src/puppet_module.rs
 
 ci:
-  - ".github/workflows/*"
+  paths:
+    - .github/workflows/*
 
 docs:
-  - "README.md"
-  - "CONTRIBUTING.md"
-  - "docs/**"
+  paths:
+    - README.md
+    - CONTRIBUTING.md
+    - docs/**
 
 dependencies:
-  - "Cargo.toml"
-  - "Cargo.lock"
+  paths:
+    - Cargo.toml
+    - Cargo.lock
 
 tests:
-  - "tests/**"
-  - "src/puppet_module.rs" # falls Testcode im Modul selbst
+  paths:
+    - tests/**
+    - src/puppet_module.rs
 
 release:
-  - "Release.toml"
+  paths:
+    - Release.toml
 
 pre-commit:
-  - ".pre-commit-config.yaml"
+  paths:
+    - .pre-commit-config.yaml
 
 deny:
-  - "deny.toml"
+  paths:
+    - deny.toml
