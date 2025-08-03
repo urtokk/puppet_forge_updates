@@ -2,7 +2,7 @@ use colored::*;
 use reqwest;
 use serde::Deserialize;
 
-static FORGE_URL: &'static str = "https://forgeapi.puppetlabs.com";
+static FORGE_URL: &str = "https://forgeapi.puppetlabs.com";
 
 // Struct to Version separated to Major, Minor and Patch
 #[derive(Deserialize, Debug)]
@@ -13,7 +13,7 @@ pub struct Version {
 }
 
 #[derive(Debug, Eq, PartialEq)]
-pub(crate) enum VersionUpdate {
+pub enum VersionUpdate {
     Major,
     Minor,
     Patch,
@@ -22,10 +22,10 @@ pub(crate) enum VersionUpdate {
 // Struct for a module with its name,current version and latest version
 // it also implements the method to get the latest version.
 #[derive(Debug)]
-pub(crate) struct PuppetModule {
-    name: String,
-    current_version: Version,
-    latest_version: Version,
+pub struct PuppetModule {
+    pub name: String,
+    pub current_version: Version,
+    pub latest_version: Version,
 }
 
 impl PuppetModule {
@@ -41,18 +41,18 @@ impl PuppetModule {
     }
 
     fn get_latest_version(name: &str) -> Version {
-        let url = format!("{}/v3/modules/{}", FORGE_URL, name);
+        let url = format!("{FORGE_URL}/v3/modules/{name}");
         let response = reqwest::blocking::get(url).unwrap();
         let module: serde_json::Value = response.json().unwrap();
         // if a version is not found print an error with the response and exit
         if module["current_release"]["version"].is_null() {
-            println!("Error: {}", module);
+            println!("Error: {module}");
             std::process::exit(1);
         }
         Version::from(module["current_release"]["version"].as_str().unwrap())
     }
 
-    pub(crate) fn determine_update(&self) -> Option<VersionUpdate> {
+    pub fn determine_update(&self) -> Option<VersionUpdate> {
         if self.current_version.major < self.latest_version.major {
             Some(VersionUpdate::Major)
         } else if self.current_version.minor < self.latest_version.minor {
@@ -66,7 +66,7 @@ impl PuppetModule {
 }
 
 // function to read a Puppetfile and return a vector of PuppetModule
-pub(crate) fn read_puppetfile(path: &str) -> Vec<PuppetModule> {
+pub fn read_puppetfile(path: &str) -> Vec<PuppetModule> {
     let file = std::fs::read_to_string(path).unwrap();
     let mut modules = Vec::new();
     for line in file.lines() {
@@ -143,9 +143,7 @@ impl Version {
     }
 
     // return the version as a string
-    fn to_string(&self) -> String {
-        format!("{}.{}.{}", self.major, self.minor, self.patch)
-    }
+    // Removed inherent to_string to avoid clippy::inherent_to_string_shadow_display
 }
 
 // implement Display for Version.

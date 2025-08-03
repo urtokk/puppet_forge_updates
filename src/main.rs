@@ -1,6 +1,5 @@
+use puppet_forge_updates::puppet_module;
 use std::env;
-
-mod puppet_module;
 
 // main takes an argument with a path to a Puppetfile
 // and reads its modules into a vector of puppet_module::PuppetModule
@@ -12,7 +11,7 @@ fn main() {
 
     for module in modules.iter() {
         if module.determine_update().is_some() {
-            println!("{}", module);
+            println!("{module}");
         }
     }
 }
