@@ -7,10 +7,10 @@
 allow = ["MIT", "Apache-2.0", "BSD-3-Clause"]
 
 # Optionally, allow dependencies that are dual-licensed with any of the above
-allow-osi-fsf-free = "either"
+
 
 # Deny any dependencies with unknown or unlicensed status
-deny = ["Unlicensed", "Unknown"]
+
 
 # If you want to see all licenses in your dependency tree, set this to true
 # This is useful for auditing but not required for CI
