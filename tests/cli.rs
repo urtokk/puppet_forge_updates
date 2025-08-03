@@ -24,5 +24,5 @@ fn fails_with_no_arguments() {
     let mut cmd = Command::cargo_bin("puppet_forge_updates").unwrap();
     cmd.assert()
         .failure()
-        .stderr(predicate::str::contains("USAGE").or(predicate::str::contains("Usage")));
+        .stdout(predicate::str::contains("USAGE").or(predicate::str::contains("Usage")));
 }

@@ -7,7 +7,20 @@ use std::env;
 fn main() {
     let args: Vec<String> = env::args().collect();
 
-    if args.len() < 2 || args.contains(&"--help".to_string()) || args.contains(&"-h".to_string()) {
+    if args.len() == 2 && (args[1] == "--help" || args[1] == "-h") {
+        // Hilfe anzeigen, exit 0
+        println!(
+            "USAGE: {} <Puppetfile>",
+            args.first()
+                .map(|s| s.as_str())
+                .unwrap_or("puppet_forge_updates")
+        );
+        println!("Checks for available updates of modules listed in the Puppetfile.");
+        std::process::exit(0);
+    }
+
+    if args.len() < 2 {
+        // Zu wenige Argumente: Usage auf stdout, exit 1
         println!(
             "USAGE: {} <Puppetfile>",
             args.first()
