@@ -82,6 +82,21 @@ jobs:
       - name: Lint GitHub Actions workflows
         run: actionlint
 
+  # Optional minimal-versions build (does not fail workflow)
+  minimal-versions:
+    runs-on: ubuntu-latest
+    continue-on-error: true
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+      - name: Set up Rust nightly
+        uses: actions-rs/toolchain@v1
+        with:
+          toolchain: nightly
+          override: true
+      - name: Build with minimal versions
+        run: cargo update -Z minimal-versions && cargo build
+
       - name: Install cargo-release
         run: cargo install cargo-release
 
