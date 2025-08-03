@@ -1,39 +1,27 @@
 puppet_module:
-  - label: puppet_module
-    pattern: src/puppet_module.rs
+  - src/puppet_module.rs
 
 ci:
-  - label: ci
-    pattern: .github/workflows/*
+  - .github/workflows/*
 
 docs:
-  - label: docs
-    pattern: README.md
-  - label: docs
-    pattern: CONTRIBUTING.md
-  - label: docs
-    pattern: docs/**
+  - README.md
+  - CONTRIBUTING.md
+  - docs/**
 
 dependencies:
-  - label: dependencies
-    pattern: Cargo.toml
-  - label: dependencies
-    pattern: Cargo.lock
+  - Cargo.toml
+  - Cargo.lock
 
 tests:
-  - label: tests
-    pattern: tests/**
-  - label: tests
-    pattern: src/puppet_module.rs
+  - tests/**
+  - src/puppet_module.rs
 
 release:
-  - label: release
-    pattern: Release.toml
+  - Release.toml
 
 pre-commit:
-  - label: pre-commit
-    pattern: .pre-commit-config.yaml
+  - .pre-commit-config.yaml
 
 deny:
-  - label: deny
-    pattern: deny.toml
+  - deny.toml
