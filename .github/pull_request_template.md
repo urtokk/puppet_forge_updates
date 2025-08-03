@@ -1,6 +1,5 @@
 puppet_forge_updates/.github/pull_request_template.md
 ```
-```markdown
 # Pull Request
 
 ## Description
