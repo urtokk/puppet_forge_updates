@@ -28,4 +28,3 @@ deny = ["Unlicensed", "Unknown"]
 # ignore = ["some-crate"]
 
 # Output format: human, json, short
-output = "human"
