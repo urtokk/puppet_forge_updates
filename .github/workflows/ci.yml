@@ -7,6 +7,55 @@ on:
     branches: [main]
 
 jobs:
+  semver-check:
+    runs-on: ubuntu-latest
+    outputs:
+      bump: ${{ steps.semver_bump.outputs.bump }}
+    steps:
+      - name: Checkout PR branch
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Install Rust (stable)
+        uses: actions-rs/toolchain@v1
+        with:
+          toolchain: stable
+          override: true
+
+      - name: Install cargo-semver-checks
+        run: cargo install cargo-semver-checks --locked
+
+      - name: Build rustdoc JSON for main as baseline
+        run: |
+          git fetch origin main
+          git checkout origin/main
+          cargo doc --no-deps --lib --all-features --document-private-items --message-format=json-render-diagnostics -Z unstable-options --output-format json -p puppet_forge_updates
+          cp target/doc/puppet_forge_updates.json /tmp/baseline.json
+          git checkout -
+      - name: Build rustdoc JSON for PR branch
+        run: |
+          cargo doc --no-deps --lib --all-features --document-private-items --message-format=json-render-diagnostics -Z unstable-options --output-format json -p puppet_forge_updates
+          cp target/doc/puppet_forge_updates.json /tmp/current.json
+      - name: Run cargo semver-checks
+        run: |
+          cargo semver-checks --baseline-rustdoc /tmp/baseline.json --current-rustdoc /tmp/current.json > semver_output.txt || true
+          cat semver_output.txt
+
+      - name: Determine required semver bump
+        id: semver_bump
+        run: |
+          if grep -q "breaking change detected" semver_output.txt; then
+            echo "bump=major" >> $GITHUB_OUTPUT
+          elif grep -q "new item added" semver_output.txt; then
+            echo "bump=minor" >> $GITHUB_OUTPUT
+          else
+            echo "bump=patch" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Echo required bump
+        run: echo "This PR requires a ${{ steps.semver_bump.outputs.bump }} release."
+
   build:
     runs-on: ubuntu-latest
     steps:
@@ -165,7 +214,7 @@ jobs:
 
   release-dry-run:
     runs-on: ubuntu-latest
-    needs: [build]
+    needs: [build, semver-check]
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -179,7 +228,7 @@ jobs:
       - name: Release dry-run (cargo publish)
         run: cargo publish --dry-run
       - name: Version bump and changelog generation (dry-run)
-        run: cargo release version --dry-run
+        run: cargo release version ${{ needs.semver-check.outputs.bump }} --dry-run
       - name: Generate changelog (conventional commits)
         run: |
           pip install git-changelog
