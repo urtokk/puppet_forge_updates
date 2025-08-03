@@ -6,10 +6,10 @@ static FORGE_URL: &'static str = "https://forgeapi.puppetlabs.com";
 
 // Struct to Version separated to Major, Minor and Patch
 #[derive(Deserialize, Debug)]
-struct Version {
-    major: u32,
-    minor: u32,
-    patch: u32,
+pub struct Version {
+    pub major: u32,
+    pub minor: u32,
+    pub patch: u32,
 }
 
 #[derive(Debug, Eq, PartialEq)]
@@ -133,7 +133,7 @@ impl std::fmt::Display for PuppetModule {
 }
 
 impl Version {
-    fn from(version: &str) -> Version {
+    pub fn from(version: &str) -> Version {
         let version: Vec<&str> = version.split(".").collect();
         Version {
             major: version[0].parse().unwrap(),
