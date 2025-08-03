@@ -6,6 +6,18 @@ use std::env;
 // afterwards it will print the update status of each module
 fn main() {
     let args: Vec<String> = env::args().collect();
+
+    if args.len() < 2 || args.contains(&"--help".to_string()) || args.contains(&"-h".to_string()) {
+        println!(
+            "USAGE: {} <Puppetfile>",
+            args.first()
+                .map(|s| s.as_str())
+                .unwrap_or("puppet_forge_updates")
+        );
+        println!("Checks for available updates of modules listed in the Puppetfile.");
+        return;
+    }
+
     let path = &args[1];
     let modules = puppet_module::read_puppetfile(path);
 

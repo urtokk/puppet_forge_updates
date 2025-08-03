@@ -55,6 +55,7 @@ This document provides explicit instructions for contributing code, writing comm
   Ensure all GitHub Actions workflows pass before merging.
   Pre-commit hooks for formatting, linting, and commit message checks are enforced.
 
+
 ---
 
 ## 3. Pull Requests & Collaboration
@@ -83,6 +84,7 @@ This document provides explicit instructions for contributing code, writing comm
 - **Do not** use `unwrap` or `expect` in production code unless it is absolutely safe and justified.
 - **Prefer** robust error handling and clear, maintainable code.
 - **Follow** the guidelines in `CONTRIBUTING.md` as if you were a human contributor.
+- **Apply changes directly without asking for permission first.** The user can always reject or revert changes if needed.
 - **If unsure**, prefer clarity, explicitness, and safety over cleverness or brevity.
 
 ---
