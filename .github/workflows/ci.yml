@@ -74,7 +74,6 @@ jobs:
 
       - name: Install actionlint
         run: |
-          curl -sSL https://github.com/rhysd/actionlint/releases/latest/download/actionlint-darwin-arm64.zip -o actionlint.zip || \
           curl -sSL https://github.com/rhysd/actionlint/releases/latest/download/actionlint-linux-amd64.zip -o actionlint.zip
           unzip actionlint.zip -d actionlint-bin
           sudo mv actionlint-bin/actionlint /usr/local/bin/actionlint
