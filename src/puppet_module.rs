@@ -157,6 +157,9 @@ impl std::fmt::Display for Version {
 #[cfg(test)]
 mod tests {
     use super::*;
+    use std::fs::File;
+    use std::io::Write;
+    use std::path::Path;
 
     // Hilfsfunktion für Mock-Module ohne Forge-API
     impl PuppetModule {
@@ -189,6 +192,57 @@ mod tests {
             "1.2.3",
             "Version string should be '1.2.3'"
         );
+    }
+
+    #[test]
+    #[should_panic]
+    fn test_version_from_invalid() {
+        // Should panic if version string is invalid
+        let _ = Version::from("1.2");
+    }
+
+    #[test]
+    fn test_read_puppetfile_nonexistent() {
+        // Should panic if file does not exist
+        let result = std::panic::catch_unwind(|| {
+            let _ = read_puppetfile("this_file_should_not_exist.puppetfile");
+        });
+        assert!(result.is_err());
+    }
+
+    #[test]
+    fn test_read_puppetfile_empty() {
+        let path = "test_empty_puppetfile";
+        File::create(path).unwrap();
+        let modules = read_puppetfile(path);
+        assert!(modules.is_empty());
+        std::fs::remove_file(path).unwrap();
+    }
+
+    #[test]
+    fn test_read_puppetfile_module_without_version() {
+        let path = "test_no_version_puppetfile";
+        let mut file = File::create(path).unwrap();
+        writeln!(file, "mod 'foo'").unwrap();
+        file.flush().unwrap();
+        let modules = read_puppetfile(path);
+        assert!(modules.is_empty());
+        std::fs::remove_file(path).unwrap();
+    }
+
+    #[test]
+    fn test_read_puppetfile_valid_module() {
+        let path = "test_valid_puppetfile";
+        let mut file = File::create(path).unwrap();
+        writeln!(file, "mod 'foo', '1.2.3'").unwrap();
+        file.flush().unwrap();
+        let modules = read_puppetfile(path);
+        assert_eq!(modules.len(), 1);
+        assert_eq!(modules[0].name, "foo");
+        assert_eq!(modules[0].current_version.major, 1);
+        assert_eq!(modules[0].current_version.minor, 2);
+        assert_eq!(modules[0].current_version.patch, 3);
+        std::fs::remove_file(path).unwrap();
     }
 
     #[test]
