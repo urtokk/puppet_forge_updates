@@ -174,9 +174,9 @@ mod tests {
     #[test]
     fn test_version_from() {
         let version = Version::from("1.2.3");
-        assert_eq!(version.major, 1);
-        assert_eq!(version.minor, 2);
-        assert_eq!(version.patch, 3);
+        assert_eq!(version.major, 1, "Major version should be 1");
+        assert_eq!(version.minor, 2, "Minor version should be 2");
+        assert_eq!(version.patch, 3, "Patch version should be 3");
     }
 
     #[test]
@@ -186,7 +186,11 @@ mod tests {
             minor: 2,
             patch: 3,
         };
-        assert_eq!(version.to_string(), "1.2.3");
+        assert_eq!(
+            version.to_string(),
+            "1.2.3",
+            "Version string should be '1.2.3'"
+        );
     }
 
     #[test]
@@ -196,7 +200,11 @@ mod tests {
             minor: 5,
             patch: 6,
         };
-        assert_eq!(format!("{}", version), "4.5.6");
+        assert_eq!(
+            format!("{}", version),
+            "4.5.6",
+            "Display output should be '4.5.6'"
+        );
     }
 
     #[test]
@@ -326,25 +334,5 @@ mod tests {
         };
         let module = PuppetModule::new_mock("puppetlabs-stdlib", "5.2.0", latest);
         assert_eq!(format!("{}", module), "");
-    }
-
-    #[test]
-    fn test_forge_live_response_to_version_struct() {
-        // Holt eine echte Antwort von der Forge-API für ein bekanntes Modul
-        let url = "https://forgeapi.puppetlabs.com/v3/modules/puppetlabs-stdlib";
-        let response = reqwest::blocking::get(url).expect("Forge API nicht erreichbar");
-        assert!(
-            response.status().is_success(),
-            "Forge API liefert Fehlerstatus"
-        );
-        let module: serde_json::Value = response.json().expect("Antwort ist kein JSON");
-        let version_str = module["current_release"]["version"]
-            .as_str()
-            .expect("Version nicht gefunden");
-        let version = Version::from(version_str);
-        // Die genaue Version kann sich ändern, daher prüfen wir nur auf sinnvolle Werte
-        assert!(version.major > 0, "Major-Version sollte > 0 sein");
-        assert!(version.minor >= 0, "Minor-Version sollte >= 0 sein");
-        assert!(version.patch >= 0, "Patch-Version sollte >= 0 sein");
     }
 }
