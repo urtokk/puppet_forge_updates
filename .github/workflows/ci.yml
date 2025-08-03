@@ -31,26 +31,26 @@ jobs:
           git fetch origin main
           git checkout origin/main
           cargo doc --no-deps --lib --all-features --document-private-items --message-format=json-render-diagnostics -Z unstable-options --output-format json -p puppet_forge_updates
-          cp target/doc/puppet_forge_updates.json /tmp/baseline.json
+          cp "target/doc/puppet_forge_updates.json" "/tmp/baseline.json"
           git checkout -
       - name: Build rustdoc JSON for PR branch
         run: |
           cargo doc --no-deps --lib --all-features --document-private-items --message-format=json-render-diagnostics -Z unstable-options --output-format json -p puppet_forge_updates
-          cp target/doc/puppet_forge_updates.json /tmp/current.json
+          cp "target/doc/puppet_forge_updates.json" "/tmp/current.json"
       - name: Run cargo semver-checks
         run: |
-          cargo semver-checks --baseline-rustdoc /tmp/baseline.json --current-rustdoc /tmp/current.json > semver_output.txt || true
-          cat semver_output.txt
+          cargo semver-checks --baseline-rustdoc "/tmp/baseline.json" --current-rustdoc "/tmp/current.json" > "semver_output.txt" || true
+          cat "semver_output.txt"
 
       - name: Determine required semver bump
         id: semver_bump
         run: |
-          if grep -q "breaking change detected" semver_output.txt; then
-            echo "bump=major" >> $GITHUB_OUTPUT
-          elif grep -q "new item added" semver_output.txt; then
-            echo "bump=minor" >> $GITHUB_OUTPUT
+          if grep -q "breaking change detected" "semver_output.txt"; then
+            echo "bump=major" >> "$GITHUB_OUTPUT"
+          elif grep -q "new item added" "semver_output.txt"; then
+            echo "bump=minor" >> "$GITHUB_OUTPUT"
           else
-            echo "bump=patch" >> $GITHUB_OUTPUT
+            echo "bump=patch" >> "$GITHUB_OUTPUT"
           fi
 
       - name: Echo required bump
