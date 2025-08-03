@@ -1,0 +1,31 @@
+# deny.toml
+# Configuration for cargo-deny (https://github.com/EmbarkStudios/cargo-deny)
+# This file defines which licenses are allowed for dependencies.
+
+[licenses]
+# List of explicitly allowed licenses
+allow = ["MIT", "Apache-2.0", "BSD-3-Clause"]
+
+# Optionally, allow dependencies that are dual-licensed with any of the above
+allow-osi-fsf-free = "either"
+
+# Deny any dependencies with unknown or unlicensed status
+deny = ["Unlicensed", "Unknown"]
+
+# If you want to see all licenses in your dependency tree, set this to true
+# This is useful for auditing but not required for CI
+# show-all = true
+
+# Optionally, you can specify exceptions for specific crates here
+# [[licenses.exceptions]]
+# name = "some-crate"
+# allow = ["Zlib"]
+
+# You can also deny specific licenses if you want to be more strict
+# deny = ["GPL-3.0", "AGPL-3.0"]
+
+# If you want to ignore certain crates from license checks, list them here
+# ignore = ["some-crate"]
+
+# Output format: human, json, short
+output = "human"

@@ -1,0 +1,32 @@
+# Configuration for actions/first-interaction
+# https://github.com/actions/first-interaction
+
+# Message for a user's first issue
+issue:
+  enabled: true
+  title: "🎉 Welcome to puppet_forge_updates!"
+  body: |
+    Hi there! 👋
+
+    Thank you for opening your first issue in this project.
+    We appreciate your contribution and will review your issue as soon as possible.
+
+    Please make sure you have provided enough context and details for us to understand and help you.
+    If you have any questions about contributing, check out our [CONTRIBUTING.md](../CONTRIBUTING.md).
+
+    Happy coding! 🚀
+
+# Message for a user's first pull request
+pr:
+  enabled: true
+  title: "🙌 Thank you for your first pull request!"
+  body: |
+    Hello and thanks for your first pull request! 🎉
+
+    We appreciate your effort to improve this project.
+    Our team will review your PR soon.
+
+    Please make sure your PR follows our [contributing guidelines](../CONTRIBUTING.md) and passes all CI checks.
+    If you have referenced any issues (e.g., `Fixes #123`), they will be automatically closed when your PR is merged.
+
+    Thank you for contributing! 💙

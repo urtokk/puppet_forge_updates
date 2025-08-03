@@ -1,0 +1,27 @@
+puppet_module:
+  - "src/puppet_module.rs"
+
+ci:
+  - ".github/workflows/*"
+
+docs:
+  - "README.md"
+  - "CONTRIBUTING.md"
+  - "docs/**"
+
+dependencies:
+  - "Cargo.toml"
+  - "Cargo.lock"
+
+tests:
+  - "tests/**"
+  - "src/puppet_module.rs" # falls Testcode im Modul selbst
+
+release:
+  - "Release.toml"
+
+pre-commit:
+  - ".pre-commit-config.yaml"
+
+deny:
+  - "deny.toml"

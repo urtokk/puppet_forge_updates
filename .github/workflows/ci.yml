@@ -1,0 +1,96 @@
+name: Rust CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  build-test-lint:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Rust
+        uses: actions/setup-rust@v1
+        with:
+          rust-version: stable
+
+      - name: Install Python and pre-commit
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.x"
+      - run: pip install pre-commit
+
+      - name: Run pre-commit checks
+        run: pre-commit run --all-files
+
+      - name: Build
+        run: cargo build --verbose
+
+      - name: Run tests
+        run: cargo test --all --verbose
+
+      - name: Run clippy
+        run: cargo clippy --all-targets --all-features -- -D warnings
+
+      - name: Run fmt
+        run: cargo fmt --all -- --check
+
+      - name: Install cargo-audit
+        run: cargo install cargo-audit
+
+      - name: Run cargo-audit (vulnerability check)
+        run: cargo audit
+
+      - name: Install cargo-deny
+        run: cargo install cargo-deny
+
+      - name: Check dependency licenses with cargo-deny
+        run: cargo deny check licenses
+
+      - name: Check dependency bans (duplicates, yanked, etc.) with cargo-deny
+        run: cargo deny check bans
+
+      - name: Install cargo-tarpaulin
+        run: cargo install cargo-tarpaulin
+
+      - name: Run code coverage (tarpaulin)
+        run: cargo tarpaulin --out Html
+
+      - name: Build documentation
+        run: cargo doc --no-deps --all
+
+      - name: Minimal versions build (nightly)
+        uses: actions-rs/toolchain@v1
+        with:
+          toolchain: nightly
+          override: true
+      - name: Build with minimal versions
+        run: cargo update -Z minimal-versions && cargo build
+
+      - name: Install actionlint
+        run: |
+          curl -sSL https://github.com/rhysd/actionlint/releases/latest/download/actionlint-darwin-arm64.zip -o actionlint.zip || \
+          curl -sSL https://github.com/rhysd/actionlint/releases/latest/download/actionlint-linux-amd64.zip -o actionlint.zip
+          unzip actionlint.zip -d actionlint-bin
+          sudo mv actionlint-bin/actionlint /usr/local/bin/actionlint
+      - name: Lint GitHub Actions workflows
+        run: actionlint
+
+      - name: Release dry-run (cargo publish)
+        run: cargo publish --dry-run
+
+      - name: Install cargo-release
+        run: cargo install cargo-release
+
+      - name: Version bump and changelog generation (dry-run)
+        run: cargo release version --dry-run
+
+      - name: Generate changelog (conventional commits)
+        run: |
+          pip install git-changelog
+          git-changelog --conventional --output CHANGELOG.md

@@ -1,0 +1,61 @@
+# Release.toml
+# Configuration for cargo-release (https://github.com/crate-ci/cargo-release)
+# This enables automated version bumping, changelog generation, and git tagging
+# according to Conventional Commits and semantic versioning.
+
+[release]
+# Level can be "patch", "minor", "major", or "auto" (auto = infer from commits)
+level = "auto"
+# Use conventional commit messages to determine version bump
+conventional_commits = true
+# Generate changelog automatically
+changelog = true
+# Changelog file path
+changelog_path = "CHANGELOG.md"
+# Commit message for version bump
+commit_message = "chore(release): (cargo-release) version {{version}}"
+# Tag message for git
+tag_message = "Release version {{version}}"
+# Push changes to remote after release
+push = true
+# Run cargo publish after release (set to false for CI dry-run)
+publish = false
+# Run pre-release checks (build, test, etc.)
+pre-release-commit-message = "chore(release): prepare for {{version}}"
+# Allow dirty working directory (set to false for safety)
+allow_dirty = false
+
+[conventional]
+# These are the default types for conventional commits
+# You can customize them if needed
+types = [
+    "feat",
+    "fix",
+    "chore",
+    "docs",
+    "style",
+    "refactor",
+    "perf",
+    "test",
+    "ci",
+    "build",
+    "revert",
+]
+# Breaking change indicators
+breaking_change_indicators = ["BREAKING CHANGE", "BREAKING CHANGES", "BREAKING"]
+
+# Changelog section mapping (optional, for pretty changelogs)
+[changelog]
+categories = [
+    { type = "feat", section = "Features" },
+    { type = "fix", section = "Bug Fixes" },
+    { type = "chore", section = "Chores" },
+    { type = "docs", section = "Documentation" },
+    { type = "style", section = "Styling" },
+    { type = "refactor", section = "Refactoring" },
+    { type = "perf", section = "Performance" },
+    { type = "test", section = "Testing" },
+    { type = "ci", section = "Continuous Integration" },
+    { type = "build", section = "Build System" },
+    { type = "revert", section = "Reverts" },
+]
