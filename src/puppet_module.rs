@@ -199,7 +199,7 @@ mod tests {
             patch: 6,
         };
         assert_eq!(
-            format!("{}", version),
+            format!("{version}"),
             "4.5.6",
             "Display output should be '4.5.6'"
         );
@@ -275,7 +275,7 @@ mod tests {
         };
         let module = PuppetModule::new_mock("puppetlabs-stdlib", "5.2.0", latest);
         assert_eq!(
-            format!("{}", module),
+            format!("{module}"),
             format!(
                 "{} {} -> {}",
                 module.name,
@@ -294,7 +294,7 @@ mod tests {
         };
         let module = PuppetModule::new_mock("puppetlabs-stdlib", "5.2.0", latest);
         assert_eq!(
-            format!("{}", module),
+            format!("{module}"),
             format!(
                 "{} {} -> {}",
                 module.name,
@@ -313,7 +313,7 @@ mod tests {
         };
         let module = PuppetModule::new_mock("puppetlabs-stdlib", "5.2.0", latest);
         assert_eq!(
-            format!("{}", module),
+            format!("{module}"),
             format!(
                 "{} {} -> {}",
                 module.name,
@@ -331,6 +331,6 @@ mod tests {
             patch: 0,
         };
         let module = PuppetModule::new_mock("puppetlabs-stdlib", "5.2.0", latest);
-        assert_eq!(format!("{}", module), "");
+        assert_eq!(format!("{module}"), "");
     }
 }
