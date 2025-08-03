@@ -15,7 +15,7 @@ fn main() {
                 .unwrap_or("puppet_forge_updates")
         );
         println!("Checks for available updates of modules listed in the Puppetfile.");
-        return;
+        std::process::exit(1);
     }
 
     let path = &args[1];
