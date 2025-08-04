@@ -1,0 +1,32 @@
+name: Welcome New Contributors
+
+on:
+  issues:
+    types: [opened]
+  pull_request_target:
+    types: [opened]
+
+jobs:
+  welcome:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Greet first-time contributors
+        uses: actions/first-interaction@v1
+        with:
+          repo-token: ${{ secrets.GITHUB_TOKEN }}
+          issue-message: |
+            👋 **Welcome and thank you for opening your first issue!**
+
+            We appreciate your contribution. Please make sure to provide as much detail as possible so we can assist you quickly.
+
+            If this is a bug report, please include steps to reproduce, expected behavior, and relevant logs or screenshots.
+
+            If you have any questions, feel free to ask. Happy contributing!
+          pr-message: |
+            🎉 **Thank you for your first pull request!**
+
+            We appreciate your effort to improve this project. Please ensure your PR follows our [Contributing Guidelines](../CONTRIBUTING.md) and passes all CI checks.
+
+            If your PR addresses an issue, reference it with `Fixes #<issue_number>`. If you have any questions or need help, don't hesitate to ask.
+
+            Welcome to the community!

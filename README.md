@@ -1,11 +1,11 @@
 # puppet_forge_updates
 
-A small CLI helper to check for updates of your Puppet modules.  
-It reads your Puppetfile, compares the specified module versions with the latest available on the Puppet Forge, and shows which modules have updates available.  
-Update severity is color-coded:  
-- **Red**: Major update  
-- **Yellow**: Minor update  
-- **Blue**: Patch update  
+A small CLI helper to check for updates of your Puppet modules.
+It reads your Puppetfile, compares the specified module versions with the latest available on the Puppet Forge, and shows which modules have updates available.
+Update severity is color-coded:
+- **Red**: Major update
+- **Yellow**: Minor update
+- **Blue**: Patch update
 
 ## Features
 
@@ -47,7 +47,7 @@ puppet_forge_updates /path/to/Puppetfile
 
 ## Contributing
 
-Pull requests and issues are welcome!  
+Pull requests and issues are welcome!
 Please open an issue for bugs or feature requests.
 
 ## License
