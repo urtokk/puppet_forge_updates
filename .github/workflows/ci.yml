@@ -30,12 +30,12 @@ jobs:
         run: |
           git fetch origin main
           git checkout origin/main
-          cargo rustdoc --no-deps --lib --all-features --document-private-items -Z unstable-options -- -o target/doc --output-format json -p puppet_forge_updates
+          cargo rustdoc --lib --all-features --document-private-items -Z unstable-options -- -o target/doc --output-format json --no-deps -p puppet_forge_updates
           cp "target/doc/puppet_forge_updates.json" "/tmp/baseline.json"
           git checkout -
       - name: Build rustdoc JSON for PR branch
         run: |
-          cargo rustdoc --no-deps --lib --all-features --document-private-items -Z unstable-options -- -o target/doc --output-format json -p puppet_forge_updates
+          cargo rustdoc --lib --all-features --document-private-items -Z unstable-options -- -o target/doc --output-format json --no-deps -p puppet_forge_updates
           cp "target/doc/puppet_forge_updates.json" "/tmp/current.json"
       - name: Run cargo semver-checks
         run: |
