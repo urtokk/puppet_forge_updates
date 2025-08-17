@@ -877,6 +877,7 @@ dependencies = [
  "assert_cmd",
  "colored",
  "predicates",
+ "proc-macro2",
  "reqwest",
  "serde",
  "serde_json",
