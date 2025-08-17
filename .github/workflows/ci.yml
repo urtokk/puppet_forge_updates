@@ -193,8 +193,8 @@ jobs:
 
       - name: Install actionlint
         run: |
-          curl -sSL https://github.com/rhysd/actionlint/releases/download/v1.6.28/actionlint-linux-amd64.zip -o actionlint.zip
-          unzip -o actionlint.zip
+          curl -sSL https://github.com/rhysd/actionlint/releases/download/v1.6.28/actionlint-linux-amd64.tar.gz -o actionlint.tar.gz
+          tar -xzf actionlint.tar.gz
           sudo mv actionlint /usr/local/bin/
       - name: Lint GitHub Actions workflows
         run: actionlint
