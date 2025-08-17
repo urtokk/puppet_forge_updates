@@ -11,16 +11,17 @@ jobs:
     runs-on: ubuntu-latest
     outputs:
       bump: ${{ steps.semver_bump.outputs.bump }}
+
     steps:
       - name: Checkout PR branch
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
 
-      - name: Install Rust (stable)
+      - name: Install Rust (nightly)
         uses: actions-rs/toolchain@v1
         with:
-          toolchain: stable
+          toolchain: nightly
           override: true
 
       - name: Install cargo-semver-checks
@@ -193,8 +194,9 @@ jobs:
 
       - name: Install actionlint
         run: |
-          curl -sSL https://github.com/rhysd/actionlint/releases/download/v1.6.28/actionlint-linux-amd64.tar.gz -o actionlint.tar.gz
-          tar -xzf actionlint.tar.gz
+          curl -sSL https://github.com/rhysd/actionlint/releases/download/v1.6.28/actionlint-linux-amd64.gz -o actionlint.gz
+          gunzip actionlint.gz
+          chmod +x actionlint
           sudo mv actionlint /usr/local/bin/
       - name: Lint GitHub Actions workflows
         run: actionlint
