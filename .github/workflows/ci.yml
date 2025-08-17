@@ -207,6 +207,8 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
+      - name: Install OpenSSL development headers
+        run: sudo apt-get update && sudo apt-get install -y libssl-dev
       - name: Set up Rust nightly
         uses: actions-rs/toolchain@v1
         with:
