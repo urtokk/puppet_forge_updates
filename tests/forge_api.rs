@@ -1,4 +1,4 @@
-use puppet_forge_updates::src::puppet_module::Version;
+use puppet_forge_updates::puppet_module::Version;
 
 #[test]
 fn test_forge_live_response_to_version_struct() {

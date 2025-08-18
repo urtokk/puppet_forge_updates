@@ -1,0 +1,110 @@
+name-template: "v$NEXT_PATCH_VERSION"
+tag-template: "v$NEXT_PATCH_VERSION"
+categories:
+  - title: "🚀 Features"
+    labels:
+      - "feat"
+      - "feature"
+  - title: "🐛 Bug Fixes"
+    labels:
+      - "fix"
+      - "bug"
+  - title: "🧰 Maintenance"
+    labels:
+      - "chore"
+      - "refactor"
+      - "perf"
+      - "ci"
+      - "build"
+  - title: "📝 Documentation"
+    labels:
+      - "docs"
+  - title: "🔒 Security"
+    labels:
+      - "security"
+      - "vulnerability"
+  - title: "🧪 Tests"
+    labels:
+      - "test"
+  - title: "⬆️ Dependencies"
+    labels:
+      - "dependencies"
+      - "dependabot"
+change-template: "- $TITLE @$AUTHOR (#$NUMBER)"
+no-changes-template: "- No changes"
+template: |
+  ## What’s Changed
+
+  $CHANGES
+
+  **Full Changelog**: https://github.com/urtokk/puppet_forge_updates/compare/$PREVIOUS_TAG...$NEXT_TAG
+
+exclude-labels:
+  - "skip-changelog"
+  - "wip"
+  - "do not merge"
+
+autolabeler:
+  - label: "feat"
+    title:
+      - "/^feat/i"
+  - label: "fix"
+    title:
+      - "/^fix/i"
+  - label: "chore"
+    title:
+      - "/^chore/i"
+  - label: "docs"
+    title:
+      - "/^docs/i"
+  - label: "refactor"
+    title:
+      - "/^refactor/i"
+  - label: "test"
+    title:
+      - "/^test/i"
+  - label: "ci"
+    title:
+      - "/^ci/i"
+  - label: "build"
+    title:
+      - "/^build/i"
+  - label: "perf"
+    title:
+      - "/^perf/i"
+  - label: "dependencies"
+    files:
+      - "Cargo.toml"
+      - "Cargo.lock"
+      - ".github/dependabot.yml"
+      - "deny.toml"
+  - label: "docs"
+    files:
+      - "README.md"
+      - "CONTRIBUTING.md"
+      - "docs/**"
+  - label: "test"
+    files:
+      - "tests/**"
+
+version-resolver:
+  major:
+    labels:
+      - "breaking"
+      - "major"
+  minor:
+    labels:
+      - "feat"
+      - "feature"
+  patch:
+    labels:
+      - "fix"
+      - "bug"
+      - "chore"
+      - "refactor"
+      - "perf"
+      - "ci"
+      - "build"
+      - "test"
+      - "docs"
+      - "dependencies"

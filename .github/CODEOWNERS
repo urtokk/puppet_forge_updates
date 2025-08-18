@@ -1,0 +1,10 @@
+# This file designates code owners for automatic PR review assignment.
+# See: https://docs.github.com/en/repositories/managing-your-repositorys-settings-and-features/customizing-your-repository/about-code-owners
+
+# All files by default
+*       @urtokk
+
+# Specific ownership for key areas (add more as your team grows)
+# src/puppet_module.rs  @urtokk
+# .github/workflows/    @urtokk
+# docs/                 @urtokk

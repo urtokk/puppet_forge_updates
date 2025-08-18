@@ -1,0 +1,31 @@
+puppet_module:
+  - changed-files:
+      - any-glob-to-any-file: ["src/puppet_module.rs"]
+
+ci:
+  - changed-files:
+      - any-glob-to-any-file: [".github/workflows/*"]
+
+docs:
+  - changed-files:
+      - any-glob-to-any-file: ["README.md", "CONTRIBUTING.md", "docs/**"]
+
+dependencies:
+  - changed-files:
+      - any-glob-to-any-file: ["Cargo.toml", "Cargo.lock"]
+
+tests:
+  - changed-files:
+      - any-glob-to-any-file: ["tests/**", "src/puppet_module.rs"]
+
+release:
+  - changed-files:
+      - any-glob-to-any-file: ["Release.toml"]
+
+pre-commit:
+  - changed-files:
+      - any-glob-to-any-file: [".pre-commit-config.yaml"]
+
+deny:
+  - changed-files:
+      - any-glob-to-any-file: ["deny.toml"]
