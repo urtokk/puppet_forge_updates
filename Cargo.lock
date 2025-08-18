@@ -876,6 +876,7 @@ version = "0.2.0"
 dependencies = [
  "assert_cmd",
  "colored",
+ "openssl",
  "openssl-sys",
  "predicates",
  "proc-macro2",
