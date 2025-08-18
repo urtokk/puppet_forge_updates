@@ -165,4 +165,4 @@ jobs:
       - name: Generate changelog (conventional commits)
         run: |
           pip install git-changelog
-          git-changelog --conventional --output CHANGELOG.md
+          git-changelog --convention conventional --output CHANGELOG.md
