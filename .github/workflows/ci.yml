@@ -11,7 +11,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
       - name: Set up Rust
         uses: dtolnay/rust-toolchain@v1
         with:
@@ -24,7 +24,7 @@ jobs:
     needs: build
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
       - name: Set up Rust
         uses: dtolnay/rust-toolchain@v1
         with:
@@ -40,7 +40,7 @@ jobs:
     needs: build
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
@@ -54,7 +54,7 @@ jobs:
     needs: build
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
       - name: Set up Rust
         uses: dtolnay/rust-toolchain@v1
         with:
@@ -67,7 +67,7 @@ jobs:
     needs: build
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
       - name: Set up Rust
         uses: dtolnay/rust-toolchain@v1
         with:
@@ -88,7 +88,7 @@ jobs:
     needs: test
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
       - name: Set up Rust
         uses: dtolnay/rust-toolchain@v1
         with:
@@ -103,7 +103,7 @@ jobs:
     needs: build
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
       - name: Set up Rust
         uses: dtolnay/rust-toolchain@v1
         with:
@@ -115,7 +115,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
       - name: Install actionlint
         run: |
           curl -sSL https://github.com/rhysd/actionlint/releases/download/v1.7.7/actionlint_1.7.7_linux_amd64.tar.gz -o actionlint.tar.gz
@@ -130,7 +130,7 @@ jobs:
     continue-on-error: true
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
       - name: Install OpenSSL development headers
         run: sudo apt-get update && sudo apt-get install -y libssl-dev
       - name: Set up Rust nightly
@@ -145,7 +145,7 @@ jobs:
     needs: [build]
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
       - name: Set up Rust
         uses: dtolnay/rust-toolchain@v1
         with:
