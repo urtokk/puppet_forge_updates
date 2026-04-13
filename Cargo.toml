@@ -10,7 +10,7 @@ serde = { version = "1.0", features = ["derive"] }
 serde_json = "1.0"
 reqwest = { version = "0.12.24", features = ["blocking", "json", "rustls-tls"] }
 colored = "3.1"
-proc-macro2 = "1.0.66"
+proc-macro2 = "1.0.106"
 openssl-sys = "0.9.110"
 openssl = "0.10.75"
 
