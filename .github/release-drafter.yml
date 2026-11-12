@@ -2,34 +2,73 @@ name-template: "v$NEXT_PATCH_VERSION"
 tag-template: "v$NEXT_PATCH_VERSION"
 categories:
   - title: "🚀 Features"
-    labels:
-      - "feat"
-      - "feature"
+    when:
+      labels:
+        - "feat"
+        - "feature"
   - title: "🐛 Bug Fixes"
-    labels:
-      - "fix"
-      - "bug"
+    when:
+      labels:
+        - "fix"
+        - "bug"
   - title: "🧰 Maintenance"
-    labels:
-      - "chore"
-      - "refactor"
-      - "perf"
-      - "ci"
-      - "build"
+    when:
+      labels:
+        - "chore"
+        - "refactor"
+        - "perf"
+        - "ci"
+        - "build"
   - title: "📝 Documentation"
-    labels:
-      - "docs"
+    when:
+      labels:
+        - "docs"
   - title: "🔒 Security"
-    labels:
-      - "security"
-      - "vulnerability"
+    when:
+      labels:
+        - "security"
+        - "vulnerability"
   - title: "🧪 Tests"
-    labels:
-      - "test"
+    when:
+      labels:
+        - "test"
   - title: "⬆️ Dependencies"
-    labels:
-      - "dependencies"
-      - "dependabot"
+    when:
+      labels:
+        - "dependencies"
+        - "dependabot"
+  - type: "pre-exclude"
+    when:
+      labels:
+        - "skip-changelog"
+        - "wip"
+        - "do not merge"
+  - type: "version-resolver"
+    semver-increment: "major"
+    when:
+      labels:
+        - "breaking"
+        - "major"
+  - type: "version-resolver"
+    semver-increment: "minor"
+    when:
+      labels:
+        - "feat"
+        - "feature"
+  - type: "version-resolver"
+    semver-increment: "patch"
+    when:
+      labels:
+        - "fix"
+        - "bug"
+        - "chore"
+        - "refactor"
+        - "perf"
+        - "ci"
+        - "build"
+        - "test"
+        - "docs"
+        - "dependencies"
 change-template: "- $TITLE @$AUTHOR (#$NUMBER)"
 no-changes-template: "- No changes"
 template: |
@@ -38,11 +77,6 @@ template: |
   $CHANGES
 
   **Full Changelog**: https://github.com/urtokk/puppet_forge_updates/compare/$PREVIOUS_TAG...$NEXT_TAG
-
-exclude-labels:
-  - "skip-changelog"
-  - "wip"
-  - "do not merge"
 
 autolabeler:
   - label: "feat"
@@ -86,25 +120,3 @@ autolabeler:
   - label: "test"
     files:
       - "tests/**"
-
-version-resolver:
-  major:
-    labels:
-      - "breaking"
-      - "major"
-  minor:
-    labels:
-      - "feat"
-      - "feature"
-  patch:
-    labels:
-      - "fix"
-      - "bug"
-      - "chore"
-      - "refactor"
-      - "perf"
-      - "ci"
-      - "build"
-      - "test"
-      - "docs"
-      - "dependencies"
